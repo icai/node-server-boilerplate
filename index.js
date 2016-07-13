@@ -51,8 +51,23 @@ var respond = function(file, res) {
 	res.writeHead(200, {'Content-Type': contentType});
 	res.end(file.content);
 }
+
+var escapeRegExp = function(str){
+      if (str == null) return '';
+      return String(str).replace(/[.*+?^=!:${}()|[\]\/\\]/g, '\\$&');
+}
+var isStaticFiles = function(url){
+	var statics = [
+		'\/css\/',
+		'\/js\/'
+	];
+	return statics.map(function(elem) {
+		return (new RegExp('^'+ escapeRegExp(elem))).test(url) ? 1 : 0;
+	}).reduce(function(a, b){ return a + b }) > 0;
+}
+
 var serveAssets = function(req, res) {
-	var file = req.url.match(/^\/(new|edit)?(\/\d+)?$/) ? 'html/page.html' : req.url;
+	var file = isStaticFiles(req.url) ? req.url : 'html/page.html';
 	if(!files[file] || debug) {
 		try {
 			files[file] = {
