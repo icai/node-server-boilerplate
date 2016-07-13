@@ -52,7 +52,7 @@ var respond = function(file, res) {
 	res.end(file.content);
 }
 var serveAssets = function(req, res) {
-	var file = req.url === '/' ? 'html/page.html' : req.url;
+	var file = req.url.match(/^\/(new|edit)?(\/\d+)?$/) ? 'html/page.html' : req.url;
 	if(!files[file] || debug) {
 		try {
 			files[file] = {
@@ -60,7 +60,7 @@ var serveAssets = function(req, res) {
 				ext: file.split(".").pop().toLowerCase()
 			}
 		} catch(err) {
-			res.writeHead(404, {'Content-Type': 'plain/text'});
+			res.writeHead(404, {'Content-Type': "text/plain"});
 			res.end('Missing resource: ' + file);
 			return;
 		}

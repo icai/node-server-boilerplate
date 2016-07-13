@@ -6,15 +6,15 @@
     <body>
 
         <div id="menu">            
-            <a href="#new">Add new ToDo</a>
-            <a href="#">Show all ToDos</a>
+            <a href="/new">Add new ToDo</a>
+            <a href="/">Show all ToDos</a>
         </div>
         <div id="content"></div>
 
         <script type="text/template" id="tpl-list-item">
             <li data-index="<%= index %>" class="<%= done %>">
                 <span><%= index+1 %>. <%= text %></span>
-                <a href="#edit/<%= index %>" id="edit">edit</a>
+                <a href="/edit/<%= index %>" id="edit">edit</a>
                 <a href="javascript:void(0);" id="change-status"><%= statusLabel %></a>
                 <a href="javascript:void(0);" id="delete">delete</a>
             </li>

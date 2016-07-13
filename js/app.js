@@ -33,7 +33,27 @@ var app = (function() {
 		content = $("#content");
 		todos.fetch({ success: function() {
 			router = new RouterClass();
-			Backbone.history.start();
+			Backbone.history.start({
+				pushState: true
+			});
+            $(document).on('click', 'a:not(.link_bypass):not([target="_blank"])', function(evt) {
+                var self = this;
+                var href = {
+                    prop: $(self).prop("href"),
+                    attr: $(self).attr("href")
+                };
+                if (evt.isDefaultPrevented()) return;
+                var root = window.location.protocol + "//" + window.location.host + '/';
+                if (
+                    href.prop &&
+                    href.prop.slice(0, root.length) === root
+                ) {
+                	router.navigate(href.attr, {trigger: true});
+                    evt.preventDefault();
+                    return false;
+                }
+            });
+
 		}});
 		add.on("saved", home);
 		edit.on("edited", home);
